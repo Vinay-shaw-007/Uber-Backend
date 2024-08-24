@@ -8,8 +8,6 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
 @Table(name = "app_user")
 public class User {
 

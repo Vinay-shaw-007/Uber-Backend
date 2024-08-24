@@ -11,8 +11,6 @@ import org.locationtech.jts.geom.Point;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
 public class RideRequest {
 
     @Id
