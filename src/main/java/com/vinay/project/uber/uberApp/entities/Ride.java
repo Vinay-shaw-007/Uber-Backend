@@ -4,11 +4,18 @@ import com.vinay.project.uber.uberApp.entities.enums.PaymentMethod;
 import com.vinay.project.uber.uberApp.entities.enums.RideRequestStatus;
 import com.vinay.project.uber.uberApp.entities.enums.RideStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Ride {
 

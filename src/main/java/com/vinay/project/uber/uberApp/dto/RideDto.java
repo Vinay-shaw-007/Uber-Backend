@@ -1,5 +1,6 @@
 package com.vinay.project.uber.uberApp.dto;
 
+import com.vinay.project.uber.uberApp.entities.PointDto;
 import com.vinay.project.uber.uberApp.entities.enums.PaymentMethod;
 import com.vinay.project.uber.uberApp.entities.enums.RideRequestStatus;
 import com.vinay.project.uber.uberApp.entities.enums.RideStatus;
@@ -17,9 +18,9 @@ public class RideDto {
 
     private Long id;
 
-    private Point pickupLocation;
+    private PointDto pickupLocation;
 
-    private Point dropOffLocation;
+    private PointDto dropOffLocation;
 
     private LocalDateTime createdTime;
 
@@ -33,8 +34,12 @@ public class RideDto {
 
     private RideStatus rideStatus;
 
+    private String otp;
+
     private Double fare;
+
     private LocalDateTime startedAt;
+
     private LocalDateTime endedAt;
 
 }
