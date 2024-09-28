@@ -1,6 +1,5 @@
 package com.vinay.project.uber.uberApp.services;
 
-import com.vinay.project.uber.uberApp.dto.RideRequestDto;
 import com.vinay.project.uber.uberApp.entities.Driver;
 import com.vinay.project.uber.uberApp.entities.Ride;
 import com.vinay.project.uber.uberApp.entities.RideRequest;
@@ -11,9 +10,8 @@ import org.springframework.data.domain.PageRequest;
 public interface RideService {
 
     Ride getRideById(Long rideId);
-    void matchWithDrivers(RideRequestDto rideRequestDto);
     Ride createNewRide(RideRequest rideRequest, Driver driver);
     Ride updateRideStatus(Ride ride, RideStatus rideStatus);
-    Page<Ride> getAllRidesOrRider(Long riderId, PageRequest pageRequest);
+    Page<Ride> getAllRidesOfRider(Long riderId, PageRequest pageRequest);
     Page<Ride> getAllRidesOfDriver(Long driverId, PageRequest pageRequest);
 }
