@@ -4,11 +4,17 @@ package com.vinay.project.uber.uberApp.entities;
 import com.vinay.project.uber.uberApp.entities.enums.TransactionMethod;
 import com.vinay.project.uber.uberApp.entities.enums.TransactionType;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class WalletTransaction {
 
     @Id
