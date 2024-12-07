@@ -6,6 +6,7 @@ import com.vinay.project.uber.uberApp.dto.RiderDto;
 import com.vinay.project.uber.uberApp.entities.Driver;
 import com.vinay.project.uber.uberApp.entities.Ride;
 import com.vinay.project.uber.uberApp.entities.RideRequest;
+import com.vinay.project.uber.uberApp.entities.User;
 import com.vinay.project.uber.uberApp.entities.enums.RideRequestStatus;
 import com.vinay.project.uber.uberApp.entities.enums.RideStatus;
 import com.vinay.project.uber.uberApp.exceptions.ResourceNotFoundException;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +38,7 @@ public class DriverServiceImpl implements DriverService {
         RideRequest rideRequest = rideRequestService.findRideRequestById(rideRequestId);
 
         if (!rideRequest.getRideRequestStatus().equals(RideRequestStatus.PENDING))
-            throw new RuntimeException("RideRequest cannot be accepted, status is "+rideRequest.getRideRequestStatus());
+            throw new RuntimeException("RideRequest cannot be accepted, status is " + rideRequest.getRideRequestStatus());
 
         Driver currentDriver = getCurrentDriver();
         if (!currentDriver.getAvailable()) {
@@ -61,7 +63,7 @@ public class DriverServiceImpl implements DriverService {
         }
 
         if (!ride.getRideStatus().equals(RideStatus.CONFIRMED)) {
-            throw new RuntimeException("Ride cannot be cancelled, invalid status: "+ride.getRideStatus());
+            throw new RuntimeException("Ride cannot be cancelled, invalid status: " + ride.getRideStatus());
         }
 
         rideService.updateRideStatus(ride, RideStatus.CANCELLED);
@@ -81,11 +83,11 @@ public class DriverServiceImpl implements DriverService {
         }
 
         if (!ride.getRideStatus().equals(RideStatus.CONFIRMED)) {
-            throw new RuntimeException("Ride status is not CONFIRMED hence cannot be started, status: "+ride.getRideStatus());
+            throw new RuntimeException("Ride status is not CONFIRMED hence cannot be started, status: " + ride.getRideStatus());
         }
 
         if (!otp.equals(ride.getOtp())) {
-            throw new RuntimeException("Otp is not valid, otp: "+otp);
+            throw new RuntimeException("Otp is not valid, otp: " + otp);
         }
 
         ride.setStartedAt(LocalDateTime.now());
@@ -110,7 +112,7 @@ public class DriverServiceImpl implements DriverService {
         }
 
         if (!ride.getRideStatus().equals(RideStatus.ONGOING)) {
-            throw new RuntimeException("Ride status is not ONGOING hence cannot be started, status: "+ride.getRideStatus());
+            throw new RuntimeException("Ride status is not ONGOING hence cannot be started, status: " + ride.getRideStatus());
         }
 
         ride.setEndedAt(LocalDateTime.now());
@@ -135,7 +137,7 @@ public class DriverServiceImpl implements DriverService {
         }
 
         if (!ride.getRideStatus().equals(RideStatus.ENDED)) {
-            throw new RuntimeException("Ride status is not ENDED hence cannot start rating, status: "+ride.getRideStatus());
+            throw new RuntimeException("Ride status is not ENDED hence cannot start rating, status: " + ride.getRideStatus());
         }
 
         return ratingService.rateRider(ride, rating);
@@ -157,8 +159,11 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver getCurrentDriver() {
-        return driverRepository.findById(2L).orElseThrow(() -> new ResourceNotFoundException("Driver not found with " +
-                "id "+2));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return driverRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException("Driver not associated with user with " +
+                        "id " + user.getId()));
     }
 
     @Override
