@@ -2,8 +2,7 @@ package com.vinay.project.uber.uberApp.entities;
 
 import com.vinay.project.uber.uberApp.entities.enums.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +14,9 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(
         name = "app_user",
         indexes = {
